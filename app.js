@@ -6,6 +6,8 @@ const path = require('path'); //Core Module
 
 const app = express();
 const port = 3000;
+const expressValidator = require('express-validator');
+
 
 /* const logger = (req, res, next) =>{
     console.log('Logging...');
@@ -24,6 +26,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 //Set static path
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Express Validator Middleware
+app.use(expressValidator(middlewareOptions));
 
 const users = [
     {
@@ -53,7 +58,23 @@ app.get('/', (req, res) =>{;
 });
 
 app.post('/users/add', (req, res)=>{
-   console.log('Form Submitted');
+
+    req.checkBody('first_name', 'First Name is Required').notEmpty();
+    req.checkBody('last_name', 'Last Name is Required').notEmpty();
+    req.checkBody('emmail', 'Email is Required').notEmpty();
+
+    const errors = req.validationErrors();
+
+    if(errors){
+    console.log('ERRORS');
+    }else{
+        const newUser = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email
+        }
+        console.log('SUCCESS');
+    }
 });
 
 app.listen(port, ()=> {
