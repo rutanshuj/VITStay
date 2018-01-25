@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const path = require('path'); //Core Module
 
 const app = express();
-const hostname = '127.0.0.1';
 const port = 3000;
 
 /* const logger = (req, res, next) =>{
@@ -15,6 +14,10 @@ const port = 3000;
 app.use(logger); //logger is the middleware required and app.use uses it
 */
 
+//View Engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 //Body Parser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,11 +25,36 @@ app.use(bodyParser.urlencoded({extended: false}));
 //Set static path
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) =>{
-   res.send("Hello World") ;
+const users = [
+    {
+       id: 1,
+       first_name: "John",
+       last_name: "Doe",
+       email: "johndoe@gmail.com",
+    },
+    {
+        id: 2,
+        first_name: "Rutanshu",
+        last_name: "Jhaveri",
+        email: "rjhaveri41@gmail.com"
+    },
+    {
+        id: 3,
+        first_name: "Jane",
+        last_name: "Jackson",
+        email: "jj@gmail.com"
+    }
+];
+app.get('/', (req, res) =>{;
+   res.render('index', {
+      title: 'Customers',
+      users: users
+   });
 });
 
-
+app.post('/users/add', (req, res)=>{
+   console.log('Form Submitted');
+});
 
 app.listen(port, ()=> {
    console.log('Server Started on Port:'+port);
