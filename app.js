@@ -3,11 +3,15 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path'); //Core Module
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 3000;
 const expressValidator = require('express-validator');
 
+//Connect to mongoose
+mongoose.connect('mongodb://localhost/abode');
+const db = mongoose.connection;
 
 /* const logger = (req, res, next) =>{
     console.log('Logging...');
