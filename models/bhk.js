@@ -1,20 +1,39 @@
-const mongoose = require('mongoose');
-
+let mongoose = require('mongoose');
+//
 //BHK schema
-const bhkSchema = mongoose.Schema({
-    Name:{
+// let bhkSchema = mongoose.Schema({
+//     title:{
+//         type: String,
+//         required: true
+//     },
+//     desc: {
+//         type: String,
+//         required: true
+//     }
+// });
+//
+// let bhk = module.exports = mongoose.model('BHK', bhkSchema);
+//
+// // Get BHK
+// module.exports.getBHK = function(callback, limit){
+//     bhk.find(callback).limit(limit);
+// }
+
+//Article Schema
+
+let bhkSchema  = mongoose.Schema({
+    title: {
         type: String,
         required: true
     },
-    create_date:{
-        type: Date,
-        default: Date.now
+    author: {
+        type: String,
+        required: true
+    },
+    body: {
+        type: String,
+        required: true
     }
 });
 
-const bhk = module.exports = mongoose.model('BHK', bhkSchema);
-
-// Get BHK
-module.exports.getBHK = function(callback, limit){
-    bhk.find(callback).limit(limit);
-}
+let Article = module.exports = mongoose.model('Articles', bhkSchema);

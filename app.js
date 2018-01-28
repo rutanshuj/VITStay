@@ -5,14 +5,28 @@ const bodyParser = require('body-parser');
 const path = require('path'); //Core Module
 const mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost/nodekb');
+let db = mongoose.connection;
+
+db.once('open', function(){
+    console.log('Connected to MongoDB');
+});
+
+//Check for DB errors
+db.on('error', function (err) {
+    console.log(err);
+});
+//Init App
 const app = express();
-const port = 3001;
 
-Bhk = require('./models/bhk');
-//Connect to mongoose
-mongoose.connect('mongodb://localhost/abc');
+//Bring in Models
+let Bhk = require('./models/bhk');
 
-const db = mongoose.connection;
+//Load View Engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+
 
 /* const logger = (req, res, next) =>{
     console.log('Logging...');
@@ -21,10 +35,7 @@ const db = mongoose.connection;
 app.use(logger); //logger is the middleware required and app.use uses it
 */
 
-// //View Engine
-// app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'views'));
-//
+
 // //Body Parser Middleware
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended: false}));
@@ -55,18 +66,24 @@ app.use(logger); //logger is the middleware required and app.use uses it
 //         email: "jj@gmail.com"
 //     }
 // ];
-// app.get('/', (req, res) =>{;
-//    res.render('index', {
-//       title: 'Customers',
-//       users: users
-//    });
-// });
-app.get('/api/bhk', (req, res)=>{
-    Bhk.getBHK(function(err, bhk){
-        if(err){throw err;}
-        res.json(bhk);
-    });
+app.get('/', function(req, res){
+   Bhk.find({}, function (err, bhk) {
+       if(err){
+           console.log(err);
+       }else{
+           res.render('indexone',{
+               title: 'BHK',
+               bhks: bhk
+           });
+       }
+   });
 });
+// app.get('/api/bhk', (req, res)=>{
+//     Bhk.getBHK(function(err, bhk){
+//         if(err){throw err;}
+//         res.json(bhk);
+//     });
+// });
 // app.post('/users/add', (req, res)=>{
 //
 //     req.checkBody('first_name', 'First Name is Required').notEmpty();
@@ -87,6 +104,10 @@ app.get('/api/bhk', (req, res)=>{
 //     }
 // });
 
-app.listen(port, ()=> {
-   console.log('Server Started on Port:'+ port);
+// app.listen(port, ()=> {
+//    console.log('Server Started on Port:'+ port);
+// });
+//Start Server
+app.listen(2000, function(){
+    console.log('Server started on port 2000...');
 });
