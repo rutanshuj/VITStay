@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 const expressValidator = require('express-validator');
 
+BHK = require('./models/bhk');
 //Connect to mongoose
 mongoose.connect('mongodb://localhost/abode');
 const db = mongoose.connection;
@@ -32,7 +33,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Express Validator Middleware
-app.use(expressValidator(middlewareOptions));
+//app.use(expressValidator(middlewareOptions));
 
 const users = [
     {
@@ -60,7 +61,12 @@ app.get('/', (req, res) =>{;
       users: users
    });
 });
-
+app.get('/api/bhk', (req,res)=>{
+    BHK.getBHK((err, bhk)=>{
+        if(err){throw err;}
+        res.json(bhk);
+    });
+});
 app.post('/users/add', (req, res)=>{
 
     req.checkBody('first_name', 'First Name is Required').notEmpty();
