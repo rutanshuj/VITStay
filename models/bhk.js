@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //BHK schema
 const bhkSchema = mongoose.Schema({
-    name:{
+    Name:{
         type: String,
         required: true
     },
