@@ -24,3 +24,6 @@ let Landlord = module.exports = mongoose.model('Landlords', landlordschema);
 module.exports.getLandlordById = function(id, callback){
     Landlord.findById(id, callback);
 }
+module.exports.addLandlord = function(landlord, callback){
+    Landlord.create(landlord, callback);
+}

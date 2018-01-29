@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 
 const port = 2000;
 
-
 mongoose.connect('mongodb://localhost/abode');
 let db = mongoose.connection;
 
@@ -80,6 +79,19 @@ app.get('/api/landlords/:_id', (req, res)=>{
         }
     });
 });
+
+//Posting Landlords By Id
+app.post('/api/landlords', (req, res)=>{
+    let landlord = req.body;
+   Lld.addLandlord(landlord,(err, landlord)=>{
+       if(err){
+           console.log(err);
+       }else{
+           res.json(landlord);
+       }
+   })
+});
+
 //Start Server
 app.listen(port, ()=> {
    console.log('Server Started on Port:'+ port);
