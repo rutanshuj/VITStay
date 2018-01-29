@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        title Knowledgebase
+    body
+        block content
+                h1 #{title}
+                ul
+                    each apt, i in apts
+                        li= apt.title
+                            ol
+                                li= apt.landlord
+                                li= apt.caretaker
+                                li= apt.create_date
+        br
+        hr
+        footer
+            p Copyright &copy; 2018

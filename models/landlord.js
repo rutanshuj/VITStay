@@ -1,17 +1,15 @@
 let mongoose = require('mongoose');
 
-//Apartments Schema
-
-let apartmentSchema  = mongoose.Schema({
-    title: {
+let landlordschema  = mongoose.Schema({
+    name: {
         type: String,
         required: true
     },
-    landlord: {
+    contact: {
         type: String,
         required: true
     },
-    caretaker: {
+    apartment: {
         type: String,
         required: true
     },
@@ -21,5 +19,4 @@ let apartmentSchema  = mongoose.Schema({
     }
 });
 
-
-let Apartment = module.exports = mongoose.model('Apartments', apartmentSchema);
+let Landlord = module.exports = mongoose.model('Landlords', landlordschema);
