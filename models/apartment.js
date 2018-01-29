@@ -23,3 +23,8 @@ let apartmentSchema  = mongoose.Schema({
 
 
 let Apartment = module.exports = mongoose.model('Apartments', apartmentSchema);
+
+//Add Genre
+module.exports.addApartment = function(apartment, callback){
+    Apartment.create(apartment, callback);
+}

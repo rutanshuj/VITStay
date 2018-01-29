@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const port = 2000;
 
+
 mongoose.connect('mongodb://localhost/abode');
 let db = mongoose.connection;
 
@@ -20,6 +21,8 @@ db.on('error', function (err) {
 });
 //Init App
 const app = express();
+
+app.use(bodyParser.json());
 
 //Bring in Models
 let Apar = require('./models/apartment');
@@ -35,12 +38,24 @@ app.get('/api/apartments', (req, res)=>{
        if(err){
            console.log(err);
        }else{
-           res.render('index',{
-               title: 'Apartments',
-               apts: apt
-           });
+           res.json(apt);
+           // res.render('index',{
+           //     title: 'Apartments',
+           //     apts: apt
+           // });
        }
    });
+});
+
+app.post('/api/apartments', (req, res)=>{
+    let apartment = req.body;
+    Apar.addApartment(apartment, (err, apartment)=>{
+       if(err){
+           throw err;
+       } else{
+           res.json(apartment);
+       }
+    });
 });
 
 app.get('/api/landlords', (req, res)=>{
@@ -49,16 +64,22 @@ app.get('/api/landlords', (req, res)=>{
            console.log(err);
        }
        else{
-           res.json(lld)
-           // res.render('index',{
-           //     title: 'Landlord',
-           //     lld: llds
-           //  });
+           res.json(lld);
        }
     });
 });
 
-
+// Getting Landlords By Id
+app.get('/api/landlords/:_id', (req, res)=>{
+    Lld.getLandlordById(req.params._id, (err, lld) =>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json(lld);
+        }
+    });
+});
 //Start Server
 app.listen(port, ()=> {
    console.log('Server Started on Port:'+ port);
